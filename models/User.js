@@ -1,4 +1,6 @@
-const { Schema, Types } = require('mongoose')
+const { Schema, Types, model } = require('mongoose')
+const thoughtSchema = require('./Thought')
+
 
 const userSchema = new Schema(
     {
@@ -16,8 +18,8 @@ const userSchema = new Schema(
             type: String, 
             unique: true, 
             required: true, 
-        }
-        // thoughts: Array of _id values referencing the Thought model
+        },
+        thoughts: [thoughtSchema]
         // friends:Array of _id values referencing the User model (self-reference)
     },
     {
@@ -32,4 +34,6 @@ userSchema.virtual('friendCount').get(function() {
     // returns the length of the user's friends array on field query
 })
 
-module.exports = userSchema
+const User = mongoose.model('User', userSchema)
+
+module.exports = User

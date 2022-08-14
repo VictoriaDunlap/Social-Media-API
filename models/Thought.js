@@ -1,5 +1,26 @@
 const { Schema, model } = require('mongoose')
 
+const reactionSchema = new mongoose.Schema({
+    reactionId: {
+        type: Schema.Types.ObjectID, 
+        default: () => new Types.ObjectId(),
+    }, 
+    reactionBody: {
+        type: String, 
+        required: true, 
+        min: 1,
+        max: [280, 'Max characters reached']
+    }, 
+    username: {
+        type: String, 
+        required: true,
+    }, 
+    createdAt: { 
+        type: Date, 
+        default: Date.now(),
+    }
+})
+
 const thoughtSchema = new Schema( 
     {
         thoughtId: {
@@ -17,13 +38,11 @@ const thoughtSchema = new Schema(
             default: Date.now(),
             // Use a getter method to format the timestamp on query
         },
-        userName: { // the one that created the thought -- so ink here
+        username: { // the one that created the thought -- so ink here
             type: String, 
             required: true,
         },
-        reactions: { // replies
-            // Array of nested documents created with the reactionSchema
-        }
+        reactions: [reactionSchema]
     }, 
     {
         toJSON: {
@@ -36,3 +55,7 @@ const thoughtSchema = new Schema(
 thoughtSchema.virtual('reactionCount').get(function() {
     //retrieves the length of the thought's reactions array field on query
 })
+
+const Thought = mongoose.model('Thought', thoughtSchema)
+
+module.exports = thoughtSchema
