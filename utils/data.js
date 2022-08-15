@@ -99,9 +99,9 @@ const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
 const getRandomName = () => `${getRandomItem(names)} ${getRandomItem(names)}`
 
-const getRandomThought = (init) => {
+const getRandomThought = (int) => {
     const results = []
-    for (let i =0; i<int; i++) {
+    for (let i =0; i< int; i++) {
         results.push({
             thoughts: getRandomItem(thoughtDescription)
         })

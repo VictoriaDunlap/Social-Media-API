@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose')
+const mongoose = require('mongoose')
 
 const reactionSchema = new mongoose.Schema({
     reactionId: {
@@ -56,6 +57,6 @@ thoughtSchema.virtual('reactionCount').get(function() {
     //retrieves the length of the thought's reactions array field on query
 })
 
-const Thought = mongoose.model('Thought', thoughtSchema)
+// const Thought = mongoose.model('Thought', thoughtSchema)
 
 module.exports = thoughtSchema
