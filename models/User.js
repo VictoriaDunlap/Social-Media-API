@@ -1,13 +1,13 @@
-const { Schema, Types, model } = require('mongoose')
-const thoughtSchema = require('./Thought')
+const { Schema, model } = require('mongoose')
+const { thoughtSchema,Thought } = require('./Thought')
 const mongoose = require('mongoose')
 
 const userSchema = new Schema(
     {
-        userId: {
-            type: Schema.Types.ObjectID, 
-            default: () => new Types.ObjectId(),
-        },
+        // userId: {
+        //     type: Schema.Types.ObjectID, 
+        //     default: () => new Types.ObjectId(),
+        // },
         username: {
             type: String, 
             unique: true, 
@@ -19,8 +19,18 @@ const userSchema = new Schema(
             unique: true, 
             required: true, 
         },
-        thoughts: [thoughtSchema]
-        // friends:Array of _id values referencing the User model (self-reference)
+        thoughts: [  
+        {   
+            type: Schema.Types.ObjectId, 
+            ref: 'Thought',
+        },
+        ],
+        friends: [ 
+        {   
+            type: Schema.Types.ObjectId, 
+            ref: 'User',
+        },
+    ],
     },
     {
         toJSON: {
@@ -30,8 +40,10 @@ const userSchema = new Schema(
     }
 )
 
-userSchema.virtual('friendCount').get(function() {
-    // returns the length of the user's friends array on field query
+userSchema
+.virtual('friendCount')
+.get(function() {
+  return this.friends.length
 })
 
 const User = mongoose.model('User', userSchema)

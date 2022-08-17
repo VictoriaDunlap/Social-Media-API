@@ -1,16 +1,20 @@
-const { User, Thought } = require('../models')
+const { User, Thought, thoughtSchema } = require('../models')
 
 module.exports = {
 
     getUsers(req, res) {
         User.find()
+        .populate({ path: 'friends', select: '-__v'})
+        .populate({ path: 'thoughts', select: '-__v'})
         .then((users) => res.json(users))
         .catch((err) => res.status(500).json(err))
+        // .exec()
     },
 
     getOneUser(req, res) {
         User.findOne({ _id: req.params.userId })
-        .select('-__v')
+        .populate({ path: 'friends', select: '-__v'})
+        .populate({ path: 'thoughts', select: '-__v'})
         .then((user) => !user ? res.status(404).json({ message: "No user with this ID" })
         : res.json(user))
     },
@@ -58,5 +62,33 @@ module.exports = {
             console.log(err)
             res.status(500).json(err)
         })
+    }, 
+
+    addFriend(req, res) {
+        User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $push: { friends: req.params.friendId} },
+            { runValidators: true, new: true }
+        )
+        .then((user) => 
+        !user 
+            ? res.status(404).json({ message: 'No user with this id' })
+            : res.json(user)
+        )
+        .catch((err) => res.status(500).json(err))
+    },
+
+    removeFriend(req, res) {
+        User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $push: { friends: req.params.friendId} },
+            { runValidators: true, new: true }
+        )
+        .then((user) => 
+        !user 
+            ? res.status(404).json({ message: 'No user with this id' })
+            : res.json(user)
+        )
+        .catch((err) => res.status(500).json(err))
     }
 }

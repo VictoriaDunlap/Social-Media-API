@@ -1,36 +1,37 @@
-const connection = require('../config/connection')
-const { User, Thought } = require('../models')
-const { getRandomName, getRandomThought } = require('./data')
+// const connection = require('../config/connection')
+// const { User, Thought } = require('../models')
+// const { getRandomName, getRandomThought } = require('./data')
 
-connection.on('error', (err) => err)
+// connection.on('error', (err) => err)
 
-connection.once('open', async () => {
-    console.log('connected')
+// connection.once('open', async () => {
+//     console.log('connected')
 
-    await Thought.deleteMany({})
+//     await Thought.deleteMany({j: true})
 
-    await User.deleteMany({})
+//     await User.deleteMany({j: true})
 
-    const users = []
+//     const users = []
 
-    for (let i = 0; i < 20; i++) {
-        const thoughts = getRandomThought(20)
+//     for (let i = 0; i < 20; i++) {
+//         const thoughts = getRandomThought(5)
 
-        const userName = getRandomName() 
+//         const userName = getRandomName() 
 
-        users.push({
-            userName,
-            thoughts
-        })
-    }
+//         users.push({
+//             userName,
+//             thoughts,
+//             friends,
+//         })
+//     }
 
-    await User.collection.insertMany(users)
+//     await User.collection.insertMany(users)
 
-    await Thoughts.collection.insertOne({
-        thoughtText: [thoughts]
-    })
+//     await Thoughts.collection.insertOne({
+//         thoughtText: [thoughts]
+//     })
 
-    console.table(users)
-    console.info('Seeding complete! 🌱')
-    process.exit(0)
-})
+//     console.table(users)
+//     console.info('Seeding complete! 🌱')
+//     process.exit(0)
+// })
